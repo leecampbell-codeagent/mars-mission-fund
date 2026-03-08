@@ -35,7 +35,7 @@ Brief: plan/ready/brief.md
   - **Verify**: Four stat cards display in a single row on wide screens and wrap on mobile; section label and heading visible
   - **Brief ref**: Approach step 2
 
-- [ ] TASK-03: Create HowItWorksSection component
+- [x] TASK-03: Create HowItWorksSection component
   - **Goal**: Three-step explainer section using Card components with accent bars, section label, and heading
   - **Details**:
     - Create `src/components/HowItWorksSection.tsx`
