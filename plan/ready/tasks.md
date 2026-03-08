@@ -143,7 +143,7 @@ Brief: plan/ready/brief.md
   - **Verify**: `npm run build` passes; visiting `/contact` shows two sections; three info cards and social links visible; no form element present
   - **Brief ref**: Approach step 7; Files table row 3
 
-- [ ] TASK-10: Update App.tsx to import pages and remove inline stubs
+- [x] TASK-10: Update App.tsx to import pages and remove inline stubs
   - **Goal**: Replace the three inline page stub components in App.tsx with imports from src/pages/
   - **Details**:
     - Read `src/App.tsx` in full before editing
