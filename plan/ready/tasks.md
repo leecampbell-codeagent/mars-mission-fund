@@ -84,7 +84,7 @@ Brief: plan/ready/brief.md
   - **Verify**: Three mission cards render; each card shows badge, progress bar, and ghost button
   - **Brief ref**: Approach step 4
 
-- [ ] TASK-06: Create ClosingCtaSection component
+- [x] TASK-06: Create ClosingCtaSection component
   - **Goal**: Closing section with deep background, heading, subtext, and secondary CTA button
   - **Details**:
     - Create `src/components/ClosingCtaSection.tsx`
