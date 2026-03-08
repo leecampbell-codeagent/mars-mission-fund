@@ -51,7 +51,7 @@ Brief: plan/ready/brief.md
   - **Verify**: Three step cards render in a row on desktop and stack on mobile; step numbers, titles, and descriptions are visible
   - **Brief ref**: Approach step 3
 
-- [ ] TASK-04: Create MissionCard composite component
+- [x] TASK-04: Create MissionCard composite component
   - **Goal**: Reusable campaign card compositing Card, Badge, ProgressBar, and a ghost Button
   - **Details**:
     - Create `src/components/MissionCard.tsx`

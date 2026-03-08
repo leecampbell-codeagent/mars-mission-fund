@@ -5,6 +5,7 @@ interface ProgressBarProps {
   max?: number;
   variant?: 'default' | 'complete';
   className?: string;
+  'aria-label'?: string;
 }
 
 function useReducedMotion(): boolean {
@@ -29,6 +30,7 @@ export function ProgressBar({
   max = 100,
   variant = 'default',
   className,
+  'aria-label': ariaLabel,
 }: ProgressBarProps) {
   const reducedMotion = useReducedMotion();
   const percentage = Math.min(100, Math.max(0, (value / max) * 100));
@@ -44,6 +46,7 @@ export function ProgressBar({
       aria-valuenow={value}
       aria-valuemin={0}
       aria-valuemax={max}
+      aria-label={ariaLabel}
       className={className}
       style={{
         position: 'relative',
