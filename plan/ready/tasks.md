@@ -68,7 +68,7 @@ Brief: plan/ready/brief.md
   - **Verify**: Component accepts all props and renders without TypeScript errors; ProgressBar ARIA attributes are present in the DOM
   - **Brief ref**: Approach step 4 (MissionCard sub-task)
 
-- [ ] TASK-05: Create FeaturedMissionsSection component
+- [x] TASK-05: Create FeaturedMissionsSection component
   - **Goal**: Grid of three MissionCard components with section label and heading
   - **Details**:
     - Create `src/components/FeaturedMissionsSection.tsx`
