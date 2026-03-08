@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
 import { useEffect } from 'react'
 import { Layout } from './components/Layout'
 import HomePage from './pages/HomePage'
+import AboutPage from './pages/AboutPage'
 
 const PAGE_TITLES: Record<string, string> = {
   '/': 'Home — Launchfire',
@@ -17,9 +18,6 @@ function TitleUpdater() {
   return null
 }
 
-function AboutPage() {
-  return <div style={{ padding: '2rem' }}>About</div>
-}
 
 function ContactPage() {
   return <div style={{ padding: '2rem' }}>Contact</div>

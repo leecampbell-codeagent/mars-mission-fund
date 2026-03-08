@@ -110,7 +110,7 @@ Brief: plan/ready/brief.md
   - **Verify**: File imports resolve; `npm run build` passes; visiting `/` in dev server shows all five sections stacked vertically
   - **Brief ref**: Files table row 1 + Approach step 1–5
 
-- [ ] TASK-08: Create AboutPage with four inline sections
+- [x] TASK-08: Create AboutPage with four inline sections
   - **Goal**: AboutPage file with four sections (Mission, Problem/Solution, Principles, Who We Serve) built directly in the page file
   - **Details**:
     - Create `src/pages/AboutPage.tsx`
