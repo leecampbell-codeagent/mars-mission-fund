@@ -18,7 +18,7 @@ Brief: plan/ready/brief.md
   - **Verify**: Component renders without TypeScript errors; visible gradient background, large heading, CTA button, and glow element present; glow animation plays in browser
   - **Brief ref**: Approach step 1
 
-- [ ] TASK-02: Create StatsSection component
+- [x] TASK-02: Create StatsSection component
   - **Goal**: Statistics section with a SectionLabel, heading, and four StatCard components in a responsive grid
   - **Details**:
     - Create `src/components/StatsSection.tsx`
