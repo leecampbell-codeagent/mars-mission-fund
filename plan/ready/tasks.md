@@ -98,7 +98,7 @@ Brief: plan/ready/brief.md
   - **Verify**: Section renders with visually distinct background; heading, subtext, and secondary button visible
   - **Brief ref**: Approach step 5
 
-- [ ] TASK-07: Create HomePage assembling all five sections
+- [x] TASK-07: Create HomePage assembling all five sections
   - **Goal**: HomePage page file that imports and assembles all five homepage sections inside the Layout shell
   - **Details**:
     - Create `src/pages/HomePage.tsx`

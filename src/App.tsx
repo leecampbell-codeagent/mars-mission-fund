@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
 import { useEffect } from 'react'
 import { Layout } from './components/Layout'
+import HomePage from './pages/HomePage'
 
 const PAGE_TITLES: Record<string, string> = {
   '/': 'Home — Launchfire',
@@ -14,10 +15,6 @@ function TitleUpdater() {
     document.title = PAGE_TITLES[location.pathname] ?? 'Launchfire'
   }, [location.pathname])
   return null
-}
-
-function HomePage() {
-  return <div style={{ padding: '2rem' }}>Home</div>
 }
 
 function AboutPage() {
