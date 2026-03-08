@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Layout } from './components/Layout'
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
+import ContactPage from './pages/ContactPage'
 
 const PAGE_TITLES: Record<string, string> = {
   '/': 'Home — Launchfire',
@@ -19,9 +20,6 @@ function TitleUpdater() {
 }
 
 
-function ContactPage() {
-  return <div style={{ padding: '2rem' }}>Contact</div>
-}
 
 export default function App() {
   return (

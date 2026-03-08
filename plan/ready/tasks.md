@@ -126,7 +126,7 @@ Brief: plan/ready/brief.md
   - **Verify**: `npm run build` passes; visiting `/about` shows four labelled sections; 5 principle cards and 4 persona cards visible
   - **Brief ref**: Approach step 6; Files table row 2
 
-- [ ] TASK-09: Create ContactPage with two inline sections
+- [x] TASK-09: Create ContactPage with two inline sections
   - **Goal**: ContactPage file with contact info cards and social links sections built directly in the page file
   - **Details**:
     - Create `src/pages/ContactPage.tsx`
