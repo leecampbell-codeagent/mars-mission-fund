@@ -136,4 +136,5 @@
   --motion-hover: var(--duration-fast) var(--easing-out);
   --motion-panel: var(--duration-medium) var(--easing-out);
   --motion-page: var(--duration-slow) var(--easing-out);
+  --motion-ambient: 3s ease-in-out infinite;
 }
