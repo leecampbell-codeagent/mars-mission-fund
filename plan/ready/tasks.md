@@ -161,7 +161,7 @@ Brief: plan/ready/brief.md
   - **Verify**: `npm run build` completes with zero TypeScript errors; `npm run dev` serves `/`, `/about`, `/contact` correctly; document title updates on navigation
   - **Brief ref**: Approach step 8; Files table — App.tsx modify
 
-- [ ] TASK-11: Visual and accessibility verification across all three pages
+- [x] TASK-11: Visual and accessibility verification across all three pages
   - **Goal**: Confirm all pages meet the visual, responsive, and accessibility requirements from the brief
   - **Details**:
     - Run `npm run build` — must complete with no errors
