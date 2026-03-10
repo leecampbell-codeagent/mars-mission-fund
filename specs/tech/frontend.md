@@ -1,7 +1,7 @@
 # Frontend Standards
 
 > **Spec ID**: L3-005
-> **Version**: 0.3
+> **Version**: 0.4
 > **Status**: Approved
 > **Rate of Change**: Sprint-level / tech decisions
 > **Depends On**: L2-001 (Brand Application Standard), L2-002 (Engineering Standard), L3-001 (Architecture)
@@ -31,26 +31,26 @@ It **does not cover**:
 
 ### From L2-002 (Engineering Standard)
 
-| Section | Constraint | Frontend Implication |
-| ------- | ---------- | -------------------- |
-| 1.4 — Input Validation | All external input validated at system boundary | All form inputs validated client-side before submission; server-side validation is authoritative |
-| 1.4 — CSP | Content Security Policy headers mandatory | No inline scripts, no `eval()`, no `unsafe-inline` in style or script directives |
-| 1.6 — Dependency Security | Dependencies scanned on every build; abandoned packages prohibited | Frontend dependency tree audited in CI; no packages without active maintenance |
-| 4.1 — Code Quality | Automated linting and formatting; strict type safety | Linter and formatter enforced in CI; strict TypeScript mode (`strict: true`) |
-| 4.2 — Test Coverage | 80% coverage for UI components | Unit + snapshot tests on all shared components; coverage gate in CI |
-| 4.4 — Pre-Merge Checklist | All gates pass before merge | Frontend-specific CI checks (build, lint, type-check, test, bundle size, accessibility audit) |
-| 5.3 — Error Response Contract | Consistent error format with human-readable message | Frontend error handling consumes machine-readable error codes and displays user-facing messages following [Brand Application Standard](L2-001) Section 4 voice patterns |
-| 6.2 — Correlation IDs | Every request carries a correlation ID | Frontend HTTP client attaches correlation ID to all API requests; ID surfaced in error reporting |
+| Section                       | Constraint                                                         | Frontend Implication                                                                                                                                                    |
+| ----------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.4 — Input Validation        | All external input validated at system boundary                    | All form inputs validated client-side before submission; server-side validation is authoritative                                                                        |
+| 1.4 — CSP                     | Content Security Policy headers mandatory                          | No inline scripts, no `eval()`, no `unsafe-inline` in style or script directives                                                                                        |
+| 1.6 — Dependency Security     | Dependencies scanned on every build; abandoned packages prohibited | Frontend dependency tree audited in CI; no packages without active maintenance                                                                                          |
+| 4.1 — Code Quality            | Automated linting and formatting; strict type safety               | Linter and formatter enforced in CI; strict TypeScript mode (`strict: true`)                                                                                            |
+| 4.2 — Test Coverage           | 80% coverage for UI components                                     | Unit + snapshot tests on all shared components; coverage gate in CI                                                                                                     |
+| 4.4 — Pre-Merge Checklist     | All gates pass before merge                                        | Frontend-specific CI checks (build, lint, type-check, test, bundle size, accessibility audit)                                                                           |
+| 5.3 — Error Response Contract | Consistent error format with human-readable message                | Frontend error handling consumes machine-readable error codes and displays user-facing messages following [Brand Application Standard](L2-001) Section 4 voice patterns |
+| 6.2 — Correlation IDs         | Every request carries a correlation ID                             | Frontend HTTP client attaches correlation ID to all API requests; ID surfaced in error reporting                                                                        |
 
 ### From L2-001 (Brand Application Standard)
 
-| Section | Constraint | Frontend Implication |
-| ------- | ---------- | -------------------- |
-| Token Architecture | Components consume Tier 2 semantic tokens only | Direct reference to Tier 1 identity tokens in component code is a build-time lint violation |
-| Section 3 — Component Specs | Mandatory component-to-token mappings | Component library implements exact token mappings from L2-001 Section 3 |
-| Section 5 — Accessibility | WCAG 2.1 AA minimum; focus states; screen reader requirements | Accessibility audit enforced in CI; all components meet Section 5 requirements |
-| Section 7 — Dark Mode | Dark-first; no light mode for core application | Single dark theme; light-theme overrides only for exception contexts (email, PDF, embedded widgets) |
-| Section 8 — Brand Misuse | Violations flagged in code review | Automated lint rules for detectable violations (Tier 1 token usage, custom colours, suppressed focus indicators) |
+| Section                     | Constraint                                                    | Frontend Implication                                                                                             |
+| --------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Token Architecture          | Components consume Tier 2 semantic tokens only                | Direct reference to Tier 1 identity tokens in component code is a build-time lint violation                      |
+| Section 3 — Component Specs | Mandatory component-to-token mappings                         | Component library implements exact token mappings from L2-001 Section 3                                          |
+| Section 5 — Accessibility   | WCAG 2.1 AA minimum; focus states; screen reader requirements | Accessibility audit enforced in CI; all components meet Section 5 requirements                                   |
+| Section 7 — Dark Mode       | Dark-first; no light mode for core application                | Single dark theme; light-theme overrides only for exception contexts (email, PDF, embedded widgets)              |
+| Section 8 — Brand Misuse    | Violations flagged in code review                             | Automated lint rules for detectable violations (Tier 1 token usage, custom colours, suppressed focus indicators) |
 
 ---
 
@@ -67,11 +67,11 @@ The build tool is **Vite** (per [Tech Stack](L3-008)), providing fast developmen
 
 The application is a **single-page application (SPA)** with **selective static pre-rendering** for SEO-relevant pages.
 
-| Page type | Rendering | Rationale |
-| --------- | --------- | --------- |
-| Marketing / landing pages | Static pre-rendering at build time (via `vite-plugin-ssr` or equivalent) | SEO-critical; content changes infrequently; can be served directly from CDN |
-| Public campaign pages | Static pre-rendering with revalidation (rebuild on campaign publish/update) | SEO-important; content is user-generated but changes on known events |
-| Authenticated pages (dashboard, account, contribution flows) | Client-side SPA rendering | Not SEO-relevant; require authentication; benefit from SPA interactivity |
+| Page type                                                    | Rendering                                                                   | Rationale                                                                   |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Marketing / landing pages                                    | Static pre-rendering at build time (via `vite-plugin-ssr` or equivalent)    | SEO-critical; content changes infrequently; can be served directly from CDN |
+| Public campaign pages                                        | Static pre-rendering with revalidation (rebuild on campaign publish/update) | SEO-important; content is user-generated but changes on known events        |
+| Authenticated pages (dashboard, account, contribution flows) | Client-side SPA rendering                                                   | Not SEO-relevant; require authentication; benefit from SPA interactivity    |
 
 Full server-side rendering (SSR) is not required at this stage. The SPA + selective pre-rendering approach avoids SSR infrastructure complexity while covering SEO needs. If SSR becomes necessary (e.g., for dynamic meta tags on campaign pages at scale), the architecture can adopt a framework like React Router's SSR mode or a lightweight Node SSR layer without restructuring the component library.
 
@@ -81,11 +81,11 @@ The following architectural constraints apply.
 
 The UI is built from a hierarchy of composable components.
 
-| Component Tier | Description | Ownership |
-| -------------- | ----------- | --------- |
-| **Design system primitives** | Button, Input, Card, Badge, ProgressBar, StatCard — implementing [Brand Application Standard](L2-001) Section 3 exactly | Shared library; changes require design review |
-| **Composite components** | Form groups, navigation, campaign cards, stat dashboards — assembled from primitives | Feature teams; must only use primitives from the design system |
-| **Page components** | Full page layouts — assembled from composites; manage data fetching and state | Feature teams; defined by L4 domain specs |
+| Component Tier               | Description                                                                                                             | Ownership                                                      |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Design system primitives** | Button, Input, Card, Badge, ProgressBar, StatCard — implementing [Brand Application Standard](L2-001) Section 3 exactly | Shared library; changes require design review                  |
+| **Composite components**     | Form groups, navigation, campaign cards, stat dashboards — assembled from primitives                                    | Feature teams; must only use primitives from the design system |
+| **Page components**          | Full page layouts — assembled from composites; manage data fetching and state                                           | Feature teams; defined by L4 domain specs                      |
 
 **Rule**: No component may define its own colours, font sizes, spacing, or animation timings.
 All visual properties are consumed from semantic tokens.
@@ -95,11 +95,11 @@ Hardcoded visual values in component code are a spec violation.
 
 State management uses a **layered approach** that avoids heavy frameworks in favour of React's built-in primitives and a dedicated server-state library.
 
-| Layer | Tool | Scope |
-| ----- | ---- | ----- |
-| **Server state** | TanStack Query (React Query) v5 | All API data: campaigns, accounts, contributions, funding progress. Handles caching, revalidation, optimistic updates, and background refetching. |
-| **Local UI state** | React `useState` / `useReducer` | Form state, modal visibility, UI toggles — ephemeral state that does not survive navigation. |
-| **Shared client state** | React Context + `useReducer` | Authentication state, user preferences, correlation ID — small amount of cross-cutting state shared across the component tree. |
+| Layer                   | Tool                            | Scope                                                                                                                                             |
+| ----------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Server state**        | TanStack Query (React Query) v5 | All API data: campaigns, accounts, contributions, funding progress. Handles caching, revalidation, optimistic updates, and background refetching. |
+| **Local UI state**      | React `useState` / `useReducer` | Form state, modal visibility, UI toggles — ephemeral state that does not survive navigation.                                                      |
+| **Shared client state** | React Context + `useReducer`    | Authentication state, user preferences, correlation ID — small amount of cross-cutting state shared across the component tree.                    |
 
 **Why TanStack Query**: It is the lightest-touch solution that satisfies the server-state requirements (caching with revalidation, optimistic mutations with rollback, background polling for real-time progress) without introducing a global state framework like Redux or Zustand. All server data flows through TanStack Query; no component fetches or caches API data outside this layer.
 
@@ -118,6 +118,24 @@ The following constraints apply regardless of implementation detail:
 - Protected routes enforce authentication state before rendering; unauthenticated users are redirected to login.
 - Route transitions use `--motion-page` semantic token for animation timing.
 
+**Lazy loading pattern**: Non-marketing routes (e.g., campaign detail, contribute) use `React.lazy` + `Suspense` for route-level code splitting. A root `<Suspense>` with a fallback UI wraps the entire `<Routes>` tree so that any lazy-loaded route is covered without individual `<Suspense>` wrappers at each route definition.
+
+```tsx
+// Route definitions (src/App.tsx or router config)
+const CampaignDetail = React.lazy(() => import('./pages/CampaignDetail'));
+const Contribute = React.lazy(() => import('./pages/Contribute'));
+
+// Root layout
+<Suspense fallback={<PageSpinner />}>
+  <Routes>
+    <Route path="/campaigns/:id" element={<CampaignDetail />} />
+    <Route path="/campaigns/:id/contribute" element={<Contribute />} />
+  </Routes>
+</Suspense>
+```
+
+Marketing pages (landing, public campaign list) may be statically pre-rendered and do not require lazy loading.
+
 ### 1.5 API Communication
 
 - All API communication goes through a centralised HTTP client that enforces:
@@ -127,6 +145,39 @@ The following constraints apply regardless of implementation detail:
   - Request/response logging (no sensitive data — per [Engineering Standard](L2-002) Section 6.1).
 - API response types are generated from or validated against the API's machine-readable documentation (per [Engineering Standard](L2-002) Section 5.5).
 - No component may call an API endpoint directly — all calls go through the centralised client.
+
+**API / hooks layering convention** (established during issues #40–#43):
+
+| Layer | Location | Responsibility |
+| --- | --- | --- |
+| **API functions** | `src/api/<domain>.ts` | Plain `fetch` wrappers; TypeScript types inferred from Zod schemas; no React dependency |
+| **Query hooks** | `src/hooks/use<Domain>.ts` | TanStack Query `useQuery` (and `useMutation`) hooks that wrap the API layer; expose loading, error, and data states |
+| **Page components** | `src/pages/` | Import hooks only — never import from `src/api/` directly |
+
+Example structure:
+
+```text
+src/
+  api/
+    campaigns.ts       # fetchCampaign(), fetchCampaigns(), etc.
+  hooks/
+    useCampaign.ts     # useQuery wrapping fetchCampaign()
+  pages/
+    CampaignDetail.tsx # imports useCampaign(), never fetchCampaign()
+```
+
+**Vite dev-server proxy**: `vite.config.ts` includes a `server.proxy` entry that forwards all `/v1` requests to `http://localhost:3000` during local development. This allows the frontend to call `/v1/campaigns` without CORS issues while the Express API server runs on port 3000.
+
+```ts
+// vite.config.ts (relevant excerpt)
+server: {
+  proxy: {
+    '/v1': 'http://localhost:3000',
+  },
+},
+```
+
+This proxy is a development-only concern; in production the frontend and API are co-hosted or the API URL is injected via environment variables.
 
 ---
 
@@ -148,6 +199,11 @@ The rule must flag:
 - Direct reference to any Tier 1 identity token name in component stylesheets.
 - Hardcoded colour values (hex, rgb, rgba, hsl) in component stylesheets.
 - Hardcoded font-family, font-size, or animation-duration values in component stylesheets.
+
+**Implementation pattern — inline `React.CSSProperties`.**
+Design system primitives and composite components define a `const xyzStyle: React.CSSProperties` object per visual state and apply it via the `style` prop.
+Tailwind is not used for component-level styles; it is imported for CSS reset and global normalisation only.
+Rationale: inline style objects are co-located with the component, are type-safe through `React.CSSProperties`, and structurally enforce the semantic token rule — the TypeScript type does not accept arbitrary string values that could be hardcoded colours.
 
 ### 2.2 Component Documentation
 
@@ -171,22 +227,22 @@ Every design system primitive must include:
 
 ### 3.1 Loading Performance
 
-| Metric | Budget | Measurement |
-| ------ | ------ | ----------- |
-| First Contentful Paint (FCP) | < 1.5s | Lighthouse, on 4G throttled connection |
-| Largest Contentful Paint (LCP) | < 2.5s | Lighthouse, on 4G throttled connection |
-| Time to Interactive (TTI) | < 3.5s | Lighthouse, on 4G throttled connection |
-| Cumulative Layout Shift (CLS) | < 0.1 | Lighthouse |
-| First Input Delay (FID) | < 100ms | Real User Monitoring (RUM) |
+| Metric                         | Budget  | Measurement                            |
+| ------------------------------ | ------- | -------------------------------------- |
+| First Contentful Paint (FCP)   | < 1.5s  | Lighthouse, on 4G throttled connection |
+| Largest Contentful Paint (LCP) | < 2.5s  | Lighthouse, on 4G throttled connection |
+| Time to Interactive (TTI)      | < 3.5s  | Lighthouse, on 4G throttled connection |
+| Cumulative Layout Shift (CLS)  | < 0.1   | Lighthouse                             |
+| First Input Delay (FID)        | < 100ms | Real User Monitoring (RUM)             |
 
 ### 3.2 Bundle Size
 
-| Bundle | Maximum Size (gzip compressed) |
-| ------ | ------------------------------ |
-| Initial JS bundle (critical path) | 150 KB |
-| Per-route chunk (lazy loaded) | 50 KB |
-| Total CSS | 30 KB |
-| Design system primitives (JS + CSS) | 40 KB |
+| Bundle                              | Maximum Size (gzip compressed) |
+| ----------------------------------- | ------------------------------ |
+| Initial JS bundle (critical path)   | 150 KB                         |
+| Per-route chunk (lazy loaded)       | 50 KB                          |
+| Total CSS                           | 30 KB                          |
+| Design system primitives (JS + CSS) | 40 KB                          |
 
 These budgets assume React 19 + TanStack Query + router as the core dependency set (~90 KB compressed baseline). The remaining budget is for application code and design system.
 
@@ -195,12 +251,12 @@ Bundle analysis runs in CI via `vite-plugin-bundle-analyzer` and fails the build
 
 ### 3.3 Runtime Performance
 
-| Metric | Target |
-| ------ | ------ |
-| Animation frame rate | 60fps minimum; no dropped frames on mid-range devices |
+| Metric               | Target                                                                |
+| -------------------- | --------------------------------------------------------------------- |
+| Animation frame rate | 60fps minimum; no dropped frames on mid-range devices                 |
 | Interaction response | < 100ms for user-initiated actions (button clicks, form interactions) |
-| List rendering | Virtualised rendering for lists exceeding 50 items |
-| Image decoding | Off-main-thread; no layout jank during image load |
+| List rendering       | Virtualised rendering for lists exceeding 50 items                    |
+| Image decoding       | Off-main-thread; no layout jank during image load                     |
 
 ---
 
@@ -268,36 +324,46 @@ Components must be designed and reviewed at the smallest breakpoint first before
 
 The breakpoint system uses four named breakpoints defined as CSS custom properties and as constants in the application's theme module.
 
-| Token | Value | Intended context |
-| ----- | ----- | ---------------- |
-| `--breakpoint-sm` | `640px` | Large phones in landscape; small tablets |
-| `--breakpoint-md` | `768px` | Tablets in portrait |
-| `--breakpoint-lg` | `1024px` | Tablets in landscape; small desktops |
-| `--breakpoint-xl` | `1280px` | Standard desktops and above |
+| Token             | Value    | Intended context                         |
+| ----------------- | -------- | ---------------------------------------- |
+| `--breakpoint-sm` | `640px`  | Large phones in landscape; small tablets |
+| `--breakpoint-md` | `768px`  | Tablets in portrait                      |
+| `--breakpoint-lg` | `1024px` | Tablets in landscape; small desktops     |
+| `--breakpoint-xl` | `1280px` | Standard desktops and above              |
 
 Media queries use `min-width` exclusively (mobile-first). Example:
 
 ```css
 /* Base: single column (mobile) */
-.card-grid { grid-template-columns: 1fr; }
+.card-grid {
+  grid-template-columns: 1fr;
+}
 
 /* sm and up: two columns */
-@media (min-width: 640px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 /* lg and up: three columns */
-@media (min-width: 1024px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 ```
 
 No component may use arbitrary breakpoint values — all responsive behaviour must use one of the four named breakpoints above.
 
 Regardless of specific values, the following constraints apply:
 
-| Context | Requirement |
-| ------- | ----------- |
-| Campaign browsing | Full functionality at all breakpoints; card grid adapts from single-column to multi-column |
-| Financial flows (contribution, KYC) | Full functionality at all breakpoints; forms must be usable on mobile without horizontal scrolling |
-| Data tables (transaction history, admin views) | Responsive pattern required — horizontal scroll, card conversion, or column prioritisation |
-| Navigation | Collapses to mobile-appropriate pattern (hamburger, bottom nav, or equivalent) below tablet breakpoint |
+| Context                                        | Requirement                                                                                            |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Campaign browsing                              | Full functionality at all breakpoints; card grid adapts from single-column to multi-column             |
+| Financial flows (contribution, KYC)            | Full functionality at all breakpoints; forms must be usable on mobile without horizontal scrolling     |
+| Data tables (transaction history, admin views) | Responsive pattern required — horizontal scroll, card conversion, or column prioritisation             |
+| Navigation                                     | Collapses to mobile-appropriate pattern (hamburger, bottom nav, or equivalent) below tablet breakpoint |
 
 ### 5.3 Touch Targets
 
@@ -314,12 +380,12 @@ No custom timing values, durations, or easing functions in component code.
 
 ### 6.2 Performance Constraints
 
-| Constraint | Requirement |
-| ---------- | ----------- |
-| Frame rate | 60fps target; animations that cannot maintain 60fps must be simplified or removed |
+| Constraint          | Requirement                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Frame rate          | 60fps target; animations that cannot maintain 60fps must be simplified or removed                                                                      |
 | Animated properties | Prefer `transform` and `opacity` only (compositor-layer animations); avoid animating `width`, `height`, `top`, `left`, or layout-triggering properties |
-| Will-change | Apply `will-change` only when an animation is imminent; remove after completion; never apply to more than a handful of elements simultaneously |
-| Main thread | No long-running JavaScript animations on the main thread; use CSS animations, Web Animations API, or requestAnimationFrame |
+| Will-change         | Apply `will-change` only when an animation is imminent; remove after completion; never apply to more than a handful of elements simultaneously         |
+| Main thread         | No long-running JavaScript animations on the main thread; use CSS animations, Web Animations API, or requestAnimationFrame                             |
 
 ### 6.3 Reduced Motion
 
@@ -338,15 +404,15 @@ The browser support policy is **latest 2 major versions** for all evergreen brow
 
 ### 7.1 Minimum Support Expectations
 
-| Browser | Support Level |
-| ------- | ------------- |
-| Chrome (latest 2 major versions) | Full support |
-| Firefox (latest 2 major versions) | Full support |
-| Safari (latest 2 major versions) | Full support |
-| Edge (latest 2 major versions) | Full support |
-| Mobile Safari (iOS, latest 2 major versions) | Full support |
-| Chrome for Android (latest 2 major versions) | Full support |
-| Internet Explorer | Not supported |
+| Browser                                      | Support Level |
+| -------------------------------------------- | ------------- |
+| Chrome (latest 2 major versions)             | Full support  |
+| Firefox (latest 2 major versions)            | Full support  |
+| Safari (latest 2 major versions)             | Full support  |
+| Edge (latest 2 major versions)               | Full support  |
+| Mobile Safari (iOS, latest 2 major versions) | Full support  |
+| Chrome for Android (latest 2 major versions) | Full support  |
+| Internet Explorer                            | Not supported |
 
 ### 7.2 Progressive Enhancement
 
@@ -380,31 +446,38 @@ There is no user-togglable light mode for the main application.
 
 The brand typography defined in [Brand Application Standard](L2-001) Section 1.3 requires loading three web fonts:
 
-| Font | Identity Token | Usage |
-| ---- | -------------- | ----- |
+| Font       | Identity Token   | Usage                                    |
+| ---------- | ---------------- | ---------------------------------------- |
 | Bebas Neue | `--font-display` | Display headings, hero text, stat values |
-| DM Sans | `--font-body` | Body text, buttons, card titles |
-| Space Mono | `--font-data` | Labels, data values, mission codes |
+| DM Sans    | `--font-body`    | Body text, buttons, card titles          |
+| Space Mono | `--font-data`    | Labels, data values, mission codes       |
 
-Font loading strategy:
+Font loading implementation:
 
-- Fonts are self-hosted (no third-party font CDN dependency).
-- `font-display: swap` for body font (DM Sans) to prevent invisible text.
-- `font-display: optional` for display font (Bebas Neue) on slow connections — fallback is acceptable for display headings.
-- Data font (Space Mono) loaded with `font-display: swap`.
-- Font files served in WOFF2 format with appropriate subset (Latin + extended Latin).
-- Font preload hints (`<link rel="preload">`) for DM Sans (critical text rendering).
+Fonts are loaded via the `@fontsource/bebas-neue`, `@fontsource/dm-sans`, and `@fontsource/space-mono` npm packages, imported in `src/index.css`.
+The underlying font files are WOFF2 format — the same self-hosted, no-CDN approach described in the spec intent — but the mechanism is npm-managed rather than manually downloaded.
+At build time, Vite bundles the WOFF2 files from the `@fontsource` packages into the output; no runtime CDN request occurs.
+
+Rationale: standardised font loading via `@fontsource` npm packages avoids manual file management (no manual WOFF2 downloads or `@font-face` declarations to maintain) and provides controlled subsetting through each package's CSS imports.
+
+`font-display` strategy per font:
+
+- `font-display: swap` for DM Sans (body font) — prevents invisible text while the font loads.
+- `font-display: optional` for Bebas Neue (display font) on slow connections — a fallback is acceptable for display headings.
+- `font-display: swap` for Space Mono (data font).
+
+Font preload hint (`<link rel="preload">`) is applied to DM Sans as the critical path font for body text rendering.
 
 ### 9.2 Image Optimisation
 
-| Requirement | Implementation |
-| ----------- | -------------- |
-| Format | Modern formats (WebP, AVIF) with fallback to JPEG/PNG |
-| Responsive images | `srcset` and `sizes` attributes for all content images |
-| Lazy loading | Images below the fold use `loading="lazy"` |
-| Aspect ratio | Explicit `width` and `height` attributes on all `<img>` elements to prevent CLS |
-| CDN | Images served via CDN with appropriate cache headers |
-| Uploads | User-uploaded images (campaign photos, KYC documents) served from a separate domain per [Engineering Standard](L2-002) Section 1.4 |
+| Requirement       | Implementation                                                                                                                     |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Format            | Modern formats (WebP, AVIF) with fallback to JPEG/PNG                                                                              |
+| Responsive images | `srcset` and `sizes` attributes for all content images                                                                             |
+| Lazy loading      | Images below the fold use `loading="lazy"`                                                                                         |
+| Aspect ratio      | Explicit `width` and `height` attributes on all `<img>` elements to prevent CLS                                                    |
+| CDN               | Images served via CDN with appropriate cache headers                                                                               |
+| Uploads           | User-uploaded images (campaign photos, KYC documents) served from a separate domain per [Engineering Standard](L2-002) Section 1.4 |
 
 ### 9.3 Icon System
 
@@ -421,9 +494,9 @@ Icon components follow a consistent API:
 
 ```tsx
 interface IconProps {
-  size?: 'sm' | 'md' | 'lg';       // maps to semantic spacing tokens
-  label?: string;                   // sets aria-label; omit for decorative icons
-  className?: string;               // layout positioning only
+  size?: 'sm' | 'md' | 'lg' // maps to semantic spacing tokens
+  label?: string // sets aria-label; omit for decorative icons
+  className?: string // layout positioning only
 }
 ```
 
@@ -437,15 +510,15 @@ Implements [Engineering Standard](L2-002) Section 4.2: 80% coverage for UI compo
 
 ### 10.1 Test Layers
 
-| Layer | Scope | Tool |
-| ----- | ----- | ---- |
-| Unit tests | Individual component rendering, prop variations, event handling | Vitest + React Testing Library |
-| Snapshot tests | Visual regression detection for design system primitives | Vitest inline snapshots |
-| Integration tests | Component composition, form flows, API interaction (mocked) | Vitest + React Testing Library + MSW (Mock Service Worker) |
-| End-to-end tests | Critical user flows: contribution, campaign browsing, account management | Playwright |
-| Accessibility tests | Automated WCAG audit on every component | axe-core (via `vitest-axe` for unit tests; `@axe-core/playwright` for E2E) |
-| Visual regression tests | Screenshot comparison for design system components | Playwright screenshot assertions |
-| API integration tests | Backend API endpoint testing (mocked or local server) | Supertest |
+| Layer                   | Scope                                                                    | Tool                                                                       |
+| ----------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| Unit tests              | Individual component rendering, prop variations, event handling          | Vitest + React Testing Library                                             |
+| Snapshot tests          | Visual regression detection for design system primitives                 | Vitest inline snapshots                                                    |
+| Integration tests       | Component composition, form flows, API interaction (mocked)              | Vitest + React Testing Library + MSW (Mock Service Worker)                 |
+| End-to-end tests        | Critical user flows: contribution, campaign browsing, account management | Playwright                                                                 |
+| Accessibility tests     | Automated WCAG audit on every component                                  | axe-core (via `vitest-axe` for unit tests; `@axe-core/playwright` for E2E) |
+| Visual regression tests | Screenshot comparison for design system components                       | Playwright screenshot assertions                                           |
+| API integration tests   | Backend API endpoint testing (mocked or local server)                    | Supertest                                                                  |
 
 **Tool rationale**:
 
@@ -457,12 +530,12 @@ Implements [Engineering Standard](L2-002) Section 4.2: 80% coverage for UI compo
 
 ### 10.2 Coverage Requirements
 
-| Component Type | Minimum Coverage | Notes |
-| -------------- | ---------------- | ----- |
-| Design system primitives | 90% | Higher bar — these are shared foundations |
-| Composite components | 80% | Per [Engineering Standard](L2-002) Section 4.2 |
-| Page components | 70% | Focus on integration and data flow; visual coverage via E2E |
-| Utility functions | 90% | Pure functions; easy to test exhaustively |
+| Component Type           | Minimum Coverage | Notes                                                       |
+| ------------------------ | ---------------- | ----------------------------------------------------------- |
+| Design system primitives | 90%              | Higher bar — these are shared foundations                   |
+| Composite components     | 80%              | Per [Engineering Standard](L2-002) Section 4.2              |
+| Page components          | 70%              | Focus on integration and data flow; visual coverage via E2E |
+| Utility functions        | 90%              | Pure functions; easy to test exhaustively                   |
 
 ### 10.3 CI Integration
 
@@ -506,11 +579,12 @@ Domain specs may not introduce visual properties that bypass this spec's token a
 
 ## Change Log
 
-| Date | Version | Author | Summary |
-| ---- | ------- | ------ | ------- |
-| March 2026 | 0.1 | — | Initial stub. Frontend architecture constraints, component library standards, performance budgets, accessibility implementation, responsive design, animation constraints, browser support, dark mode implementation, asset optimisation, and testing strategy. Framework selection and specific breakpoints deferred as open decisions. |
-| March 2026 | 0.2 | — | Resolved OQ-1: React 19.x selected as frontend framework per L3-008. |
-| March 2026 | 0.3 | — | Resolved OQ-2 through OQ-9: Mobile-first responsive strategy with breakpoints at 640/768/1024/1280px. Bundle size budgets established. TanStack Query + React built-in state for state management. Inline SVG React components for icons. Vitest + React Testing Library + Playwright + MSW + Supertest for testing (with Playwright MCP for AI agent integration). SPA with selective static pre-rendering for SEO pages. Graceful degradation for no-JS with branded noscript fallback. |
+| Date       | Version | Author | Summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------- | ------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| March 2026 | 0.1     | —      | Initial stub. Frontend architecture constraints, component library standards, performance budgets, accessibility implementation, responsive design, animation constraints, browser support, dark mode implementation, asset optimisation, and testing strategy. Framework selection and specific breakpoints deferred as open decisions.                                                                                                                                                  |
+| March 2026 | 0.2     | —      | Resolved OQ-1: React 19.x selected as frontend framework per L3-008.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| March 2026 | 0.3     | —      | Resolved OQ-2 through OQ-9: Mobile-first responsive strategy with breakpoints at 640/768/1024/1280px. Bundle size budgets established. TanStack Query + React built-in state for state management. Inline SVG React components for icons. Vitest + React Testing Library + Playwright + MSW + Supertest for testing (with Playwright MCP for AI agent integration). SPA with selective static pre-rendering for SEO pages. Graceful degradation for no-JS with branded noscript fallback. |
+| 2026-03-09 | 0.4     | —      | Documented patterns introduced in issues #40–#43 (Public Campaign Pages milestone): (1) Section 1.4 — lazy loading pattern for non-marketing routes using `React.lazy` + `Suspense` with a root `<Suspense>` wrapping `<Routes>`; (2) Section 1.5 — api/hooks layering convention (`src/api/<domain>.ts` for fetch functions, `src/hooks/use<Domain>.ts` for TanStack Query hooks, page components consume hooks only); (3) Section 1.5 — Vite dev-server proxy forwarding `/v1` to `http://localhost:3000` for local development. |
 
 ---
 

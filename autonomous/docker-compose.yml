@@ -1,4 +1,20 @@
 services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: mmf
+      POSTGRES_PASSWORD: mmf
+      POSTGRES_DB: mmf
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U mmf']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   agent:
     build: .
     container_name: ${CONTAINER_NAME:-autonomous-agent}
@@ -10,6 +26,13 @@ services:
       - BASE_BRANCH=${BASE_BRANCH}
       - BRANCH=${BRANCH}
     volumes:
-      - ./screenshots:/screenshots
+      - ./logs/${ISSUE_NUMBER:-default}/screenshots:/screenshots
+      - ./logs/${ISSUE_NUMBER:-default}:/workspace/logs
     mem_limit: 4g
     cpus: 2
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

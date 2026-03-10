@@ -255,13 +255,13 @@ For everything else, we use best-of-breed tools and accept the trade-offs that c
 Every significant technology decision must pass through this framework.
 "Significant" means: introducing a new service, library, or infrastructure component; building functionality that could be replaced by an existing solution; or replacing an existing tool.
 
-| Question | If Yes | If No |
-| ---------- | -------- | ------- |
-| Is this capability core to our competitive advantage — the product experience, campaign curation, or donor relationship that differentiates MMF? | Evaluate building. Proceed to build-quality assessment. | Default to integrate or buy. |
-| Does an open-source or SaaS solution exist that solves ≥80% of the requirement? | Use it. Engineer the remaining 20% as integration, not reimplementation. | Evaluate building. Document why the market gap exists. |
-| Does integrating the third-party solution expand our PCI DSS scope or introduce an unacceptable trust boundary? | This is a valid trigger to build. Document the security rationale. | Integrate. |
-| Does the external solution's roadmap, pricing model, or licence create an existential risk to the platform? | Evaluate alternatives first. If none exist, build with an abstraction layer. | Integrate. |
-| Can we wrap the external solution behind an interface that allows replacement without changing consuming code? | Required for all integrations. Proceed. | Design the abstraction layer before integrating. |
+| Question                                                                                                                                         | If Yes                                                                       | If No                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Is this capability core to our competitive advantage — the product experience, campaign curation, or donor relationship that differentiates MMF? | Evaluate building. Proceed to build-quality assessment.                      | Default to integrate or buy.                           |
+| Does an open-source or SaaS solution exist that solves ≥80% of the requirement?                                                                  | Use it. Engineer the remaining 20% as integration, not reimplementation.     | Evaluate building. Document why the market gap exists. |
+| Does integrating the third-party solution expand our PCI DSS scope or introduce an unacceptable trust boundary?                                  | This is a valid trigger to build. Document the security rationale.           | Integrate.                                             |
+| Does the external solution's roadmap, pricing model, or licence create an existential risk to the platform?                                      | Evaluate alternatives first. If none exist, build with an abstraction layer. | Integrate.                                             |
+| Can we wrap the external solution behind an interface that allows replacement without changing consuming code?                                   | Required for all integrations. Proceed.                                      | Design the abstraction layer before integrating.       |
 
 ### 2.2 What We Build
 
@@ -302,14 +302,14 @@ But autonomy operates in service of the company, not the team.
 
 ### 3.1 Decision Rights
 
-| Decision Type | Authority | Escalation |
-| -------------- | ----------- | ----------- |
-| Implementation approach within a spec | Engineer who owns the work | None required |
-| Technology selection within the Build vs. Own framework | Team that will operate the technology | Peer review from one engineer outside the team |
-| API contract changes affecting other teams | Owning team, with mandatory notification to consuming teams | If consuming teams object, resolve at engineering leadership level |
-| New external dependency introduction | Team lead, with vendor evaluation documented | Security review required for dependencies that handle sensitive data |
-| Architectural decisions affecting multiple services | Owning team proposes, architecture review validates | Defined in `tech/architecture.md` (ADR process) |
-| Changes to this standard (L2) | Engineering leadership | Requires review of all L3 specs for alignment |
+| Decision Type                                           | Authority                                                   | Escalation                                                           |
+| ------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------- |
+| Implementation approach within a spec                   | Engineer who owns the work                                  | None required                                                        |
+| Technology selection within the Build vs. Own framework | Team that will operate the technology                       | Peer review from one engineer outside the team                       |
+| API contract changes affecting other teams              | Owning team, with mandatory notification to consuming teams | If consuming teams object, resolve at engineering leadership level   |
+| New external dependency introduction                    | Team lead, with vendor evaluation documented                | Security review required for dependencies that handle sensitive data |
+| Architectural decisions affecting multiple services     | Owning team proposes, architecture review validates         | Defined in `tech/architecture.md` (ADR process)                      |
+| Changes to this standard (L2)                           | Engineering leadership                                      | Requires review of all L3 specs for alignment                        |
 
 ### 3.2 Autonomy Within Standards
 
@@ -377,13 +377,13 @@ Where type systems are available, they are mandatory and configured at their str
 All new code must include tests.
 The minimum coverage thresholds are:
 
-| Layer | Minimum Coverage | Type |
-| ------- | ----------------- | ------ |
-| Business logic / domain | 90% | Unit tests |
-| API endpoints | 100% of documented contracts | Integration tests |
-| Payment flows | 100% of success and failure paths | Integration + end-to-end |
-| Authentication / authorisation | 100% of roles and permission combinations | Integration tests |
-| UI components | 80% | Unit + snapshot tests |
+| Layer                          | Minimum Coverage                          | Type                     |
+| ------------------------------ | ----------------------------------------- | ------------------------ |
+| Business logic / domain        | 90%                                       | Unit tests               |
+| API endpoints                  | 100% of documented contracts              | Integration tests        |
+| Payment flows                  | 100% of success and failure paths         | Integration + end-to-end |
+| Authentication / authorisation | 100% of roles and permission combinations | Integration tests        |
+| UI components                  | 80%                                       | Unit + snapshot tests    |
 
 Coverage is measured on new and changed code, not retroactively applied to legacy code.
 Legacy code coverage is improved incrementally — every PR that touches legacy code must leave test coverage higher than it found it.
@@ -407,18 +407,18 @@ Reviewers should ask: "does this PR leave things better for the next person?"
 Every PR must satisfy these gates before merge.
 CI enforces what it can; reviewers enforce the rest.
 
-| Gate | Enforced By | Applies To |
-| ------ | ------------ | ----------- |
-| All tests pass | CI (automated) | All PRs |
-| Lint and format clean | CI (automated) | All PRs |
-| Type checks pass | CI (automated) | All PRs |
-| Dependency vulnerability scan clean | CI (automated) | All PRs |
-| Test coverage thresholds met | CI (automated) | All PRs |
-| At least one approving review | Git platform | All PRs |
-| Security reviewer approved | Git platform + process | Security-surface PRs |
-| No secrets in code or config | CI (automated, secret scanning) | All PRs |
-| "Better than we found it" check | Reviewer (manual) | All PRs |
-| Spec alignment verified | Reviewer (manual) | PRs implementing spec requirements |
+| Gate                                | Enforced By                     | Applies To                         |
+| ----------------------------------- | ------------------------------- | ---------------------------------- |
+| All tests pass                      | CI (automated)                  | All PRs                            |
+| Lint and format clean               | CI (automated)                  | All PRs                            |
+| Type checks pass                    | CI (automated)                  | All PRs                            |
+| Dependency vulnerability scan clean | CI (automated)                  | All PRs                            |
+| Test coverage thresholds met        | CI (automated)                  | All PRs                            |
+| At least one approving review       | Git platform                    | All PRs                            |
+| Security reviewer approved          | Git platform + process          | Security-surface PRs               |
+| No secrets in code or config        | CI (automated, secret scanning) | All PRs                            |
+| "Better than we found it" check     | Reviewer (manual)               | All PRs                            |
+| Spec alignment verified             | Reviewer (manual)               | PRs implementing spec requirements |
 
 ### 4.5 Deployment Gates
 
@@ -501,14 +501,14 @@ This section defines the baseline that every service must meet.
 All services emit structured logs (JSON format).
 Every log entry must include:
 
-| Field | Description |
-| ------- | ------------ |
-| `timestamp` | ISO 8601 with timezone |
-| `level` | Standard levels: DEBUG, INFO, WARN, ERROR |
-| `correlation_id` | Unique ID that follows a request across all services it touches |
-| `service` | Name of the emitting service |
-| `message` | Human-readable description of the event |
-| `context` | Structured metadata relevant to the event (resource IDs, action type, duration) |
+| Field            | Description                                                                     |
+| ---------------- | ------------------------------------------------------------------------------- |
+| `timestamp`      | ISO 8601 with timezone                                                          |
+| `level`          | Standard levels: DEBUG, INFO, WARN, ERROR                                       |
+| `correlation_id` | Unique ID that follows a request across all services it touches                 |
+| `service`        | Name of the emitting service                                                    |
+| `message`        | Human-readable description of the event                                         |
+| `context`        | Structured metadata relevant to the event (resource IDs, action type, duration) |
 
 Sensitive data (PII, financial data, credentials) must never appear in log entries.
 Use resource identifiers, not raw data.
@@ -533,12 +533,12 @@ They must be accessible to the orchestration layer without credentials.
 
 Every service emits metrics for:
 
-| Metric | Description |
-| -------- | ------------ |
-| Request rate | Requests per second, by endpoint and status code |
-| Error rate | Errors per second, by endpoint and error type |
-| Latency | p50, p95, p99 response times, by endpoint |
-| Saturation | Resource utilisation (CPU, memory, connections, queue depth) |
+| Metric       | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| Request rate | Requests per second, by endpoint and status code             |
+| Error rate   | Errors per second, by endpoint and error type                |
+| Latency      | p50, p95, p99 response times, by endpoint                    |
+| Saturation   | Resource utilisation (CPU, memory, connections, queue depth) |
 
 These are the four golden signals.
 Additional domain-specific metrics are defined in the relevant L3 and L4 specs.
@@ -612,9 +612,9 @@ If a change includes a database migration, the migration must be backward-compat
 
 ## Change Log
 
-| Date | Version | Author | Summary |
-| ------ | --------- | -------- | --------- |
-| March 2026 | 1.0 | — | Initial draft. Engineering values (six spectrum positions from Campbell Method Engineering Values Assessment), security invariants, build-vs-own framework, ownership and decision authority, quality gates, API contract standards, observability baseline, environment and configuration. |
+| Date       | Version | Author | Summary                                                                                                                                                                                                                                                                                     |
+| ---------- | ------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| March 2026 | 1.0     | —      | Initial draft. Engineering values (six spectrum positions from Campbell Method Engineering Values Assessment), security invariants, build-vs-own framework, ownership and decision authority, quality gates, API contract standards, observability baseline, environment and configuration. |
 
 ---
 

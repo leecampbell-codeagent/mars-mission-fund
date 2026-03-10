@@ -18,7 +18,13 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
   && apt-get update && apt-get install -y gh \
   && rm -rf /var/lib/apt/lists/*
 
+# DBMate — database migration tool
+RUN curl -fsSL https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64 \
+      -o /usr/local/bin/dbmate \
+  && chmod +x /usr/local/bin/dbmate
+
 # Claude Code CLI + Playwright MCP server (global)
+# Base image ships Node 20 + npm 10; npm workspaces are fully supported — npm ci works in monorepos.
 RUN npm install -g @anthropic-ai/claude-code @playwright/mcp
 
 # Non-root user — Claude Code refuses --dangerously-skip-permissions as root

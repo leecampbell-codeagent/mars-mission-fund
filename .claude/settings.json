@@ -35,7 +35,7 @@
       "Bash(gh pr:*)",
       "Bash(gh api:*)",
       "Bash(gh repo:*)",
-      "Bash(npm install:*)",
+      "Bash(npm ci:*)",
       "Bash(npm run:*)",
       "Bash(npx:*)",
       "Bash(node:*)",
@@ -43,13 +43,8 @@
       "Bash(prettier:*)",
       "Bash(tsc:*)"
     ],
-    "deny": [
-      "Bash(git branch -D:*)",
-      "Bash(gh pr merge:*)"
-    ]
+    "deny": ["Bash(git branch -D:*)", "Bash(gh pr merge:*)"]
   },
   "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "playwright"
-  ]
+  "enabledMcpjsonServers": ["playwright"]
 }

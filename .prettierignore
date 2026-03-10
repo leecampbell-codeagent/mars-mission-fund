@@ -1,0 +1,7 @@
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+specs/standards/mars-mission-fund-brand.html
+**/*.md

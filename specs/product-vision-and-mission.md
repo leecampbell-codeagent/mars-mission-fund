@@ -12,17 +12,17 @@ The strategic foundation document for a secure crowdfunding platform that channe
 
 This is the L1 Strategic spec. It is the root document in the Mars Mission Fund specification hierarchy. All other specs inherit from and must align with the vision, mission, principles, and scope boundaries defined here. See `specs/README.md` for the full specification index.
 
-| Field | Value |
-|---|---|
-| SPEC ID | L1-001 |
-| DOCUMENT | Product Vision & Mission |
-| VERSION | 1.3 |
-| STATUS | Approved |
-| CLASSIFICATION | Internal |
+| Field          | Value                                                 |
+| -------------- | ----------------------------------------------------- |
+| SPEC ID        | L1-001                                                |
+| DOCUMENT       | Product Vision & Mission                              |
+| VERSION        | 1.3                                                   |
+| STATUS         | Approved                                              |
+| CLASSIFICATION | Internal                                              |
 | RATE OF CHANGE | Slow — revised quarterly or at major strategic pivots |
-| DEPENDS ON | None (root document) |
-| DEPENDED ON BY | All L2, L3, and L4 specs |
-| DATE | March 2026 |
+| DEPENDS ON     | None (root document)                                  |
+| DEPENDED ON BY | All L2, L3, and L4 specs                              |
+| DATE           | March 2026                                            |
 
 ---
 
@@ -40,12 +40,12 @@ Mars Mission Fund bridges this gap by creating a secure, transparent, and purpos
 
 ### 1.3 Who We Serve
 
-| Persona | Description | Primary Need |
-|---|---|---|
-| Mission Backers | Individuals who want to fund specific Mars projects with as little as $50 | Transparency, trust, and a tangible connection to the mission they fund |
-| Project Creators | Engineers, scientists, and teams building Mars-enabling technology | A credible platform to raise capital, gain visibility, and prove viability |
-| Institutional Partners | Space agencies, research institutions, and corporate sponsors | Due diligence, compliance, and aggregated deal flow for strategic co-investment |
-| Platform Administrators | Internal team responsible for curation, compliance, and platform integrity | Efficient review workflows, robust access control, and audit trails |
+| Persona                 | Description                                                                | Primary Need                                                                    |
+| ----------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Mission Backers         | Individuals who want to fund specific Mars projects with as little as $50  | Transparency, trust, and a tangible connection to the mission they fund         |
+| Project Creators        | Engineers, scientists, and teams building Mars-enabling technology         | A credible platform to raise capital, gain visibility, and prove viability      |
+| Institutional Partners  | Space agencies, research institutions, and corporate sponsors              | Due diligence, compliance, and aggregated deal flow for strategic co-investment |
+| Platform Administrators | Internal team responsible for curation, compliance, and platform integrity | Efficient review workflows, robust access control, and audit trails             |
 
 ### 1.4 Strategic Principles
 
@@ -134,13 +134,13 @@ Clarity about scope is as important as ambition. These boundaries are authoritat
 
 The platform's success is measured across five dimensions. These metrics are owned by this document; individual specs may define supporting metrics that roll up into these.
 
-| Dimension | Key Metric | Year 1 Target |
-|---|---|---|
-| Trust | Zero data breaches; 100% uptime for financial flows | Maintain through launch + 12 months |
-| Adoption | Registered backers | 50,000 backers across 20+ countries |
-| Funding | Total capital raised through platform | $5M cumulative in first year |
-| Curation | Project success rate (milestones delivered on time) | > 80% of funded projects hit first milestone |
-| Security | Mean time to detect / respond to security events | MTTD < 15 min, MTTR < 4 hours |
+| Dimension | Key Metric                                          | Year 1 Target                                |
+| --------- | --------------------------------------------------- | -------------------------------------------- |
+| Trust     | Zero data breaches; 100% uptime for financial flows | Maintain through launch + 12 months          |
+| Adoption  | Registered backers                                  | 50,000 backers across 20+ countries          |
+| Funding   | Total capital raised through platform               | $5M cumulative in first year                 |
+| Curation  | Project success rate (milestones delivered on time) | > 80% of funded projects hit first milestone |
+| Security  | Mean time to detect / respond to security events    | MTTD < 15 min, MTTR < 4 hours                |
 
 ---
 
@@ -148,12 +148,12 @@ The platform's success is measured across five dimensions. These metrics are own
 
 This document is the root of a four-layer specification hierarchy designed for agent-first consumption. Each layer has a distinct rate of change and scope of authority. The full index with cross-references and dependency metadata is maintained in `specs/README.md`.
 
-| Layer | Purpose | Documents | Rate of Change |
-|---|---|---|---|
-| L1 | Strategic vision and scope | `product-vision-and-mission.md` | Quarterly / pivots |
-| L2 | Standards and principles | `standards/brand.md`, `standards/engineering.md` | Monthly / standard reviews |
-| L3 | Technical how-we-build | `tech/architecture`, `security`, `reliability`, `data-management`, `frontend`, `audit`, `markdown`, `tech-stack` | Sprint-level / tech decisions |
-| L4 | Domain what-we-build | `domain/account`, `campaign`, `donor`, `payments`, `kyc` | Per feature / per release |
+| Layer | Purpose                    | Documents                                                                                                        | Rate of Change                |
+| ----- | -------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| L1    | Strategic vision and scope | `product-vision-and-mission.md`                                                                                  | Quarterly / pivots            |
+| L2    | Standards and principles   | `standards/brand.md`, `standards/engineering.md`                                                                 | Monthly / standard reviews    |
+| L3    | Technical how-we-build     | `tech/architecture`, `security`, `reliability`, `data-management`, `frontend`, `audit`, `markdown`, `tech-stack` | Sprint-level / tech decisions |
+| L4    | Domain what-we-build       | `domain/account`, `campaign`, `donor`, `payments`, `kyc`                                                         | Per feature / per release     |
 
 **Agent protocol:** Before implementing any task, read `specs/README.md` to identify which specs govern the affected domain. Specs at lower layers must not contradict higher layers. If a conflict is detected, flag it as a blocking issue and reference both specs.
 
