@@ -17,6 +17,7 @@ const mockCampaign: CampaignDetail = {
   contributorCount: 4_382,
   deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   createdAt: new Date('2024-01-01T00:00:00.000Z'),
+  createdBy: null,
   slug: 'mars-habitat-alpha',
   alignmentStatement: 'Aligned with Mars mission.',
   tags: [],
@@ -61,6 +62,9 @@ const mockCampaign: CampaignDetail = {
       body: 'Things are going well.',
     },
   ],
+  creatorId: null,
+  reviewerId: null,
+  cancellationRequestedAt: null,
 }
 
 vi.mock('../hooks/useCampaign', () => ({
@@ -69,6 +73,16 @@ vi.mock('../hooks/useCampaign', () => ({
     isLoading: false,
     isError: false,
     error: null,
+  }),
+}))
+
+vi.mock('../context/AuthContext', () => ({
+  useAuthContext: () => ({
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    login: vi.fn(),
+    logout: vi.fn(),
   }),
 }))
 

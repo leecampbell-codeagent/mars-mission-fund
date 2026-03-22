@@ -7,7 +7,7 @@ A draft PR already exists. The branch has already been pushed. Your only job is 
 ## Input
 
 - `ISSUE_NUMBER`: The GitHub issue this work addresses
-- `UPSTREAM_REPO`: The upstream repository
+- `PR_REPO`: The repository where the PR lives
 - `PR_NUMBER`: The existing draft PR number
 - `BRANCH`: The current feature branch name
 - `plan/ready/brief.md`: The implementation brief
@@ -22,6 +22,8 @@ Run `./scripts/ci-check.sh`. Every check must pass.
 If any check fails, fix the issue, commit the fix, and re-run until all pass.
 
 Verify all tasks in `plan/ready/tasks.md` are checked `[x]`.
+
+If the brief's Verification section mentions E2E flows, check that `git diff main...HEAD --name-only` includes at least one `e2e/*.spec.ts` file. If missing, add a note to the PR description: "Note: E2E tests were expected but not found."
 
 ### Step 2: Prepare PR Description
 
@@ -52,7 +54,7 @@ Closes #<ISSUE_NUMBER>
 Update the existing draft PR with the proper title and description:
 
 ```sh
-gh pr edit <PR_NUMBER> --repo ${UPSTREAM_REPO} \
+gh pr edit <PR_NUMBER> --repo ${PR_REPO} \
   --title "feat: <brief title from issue>" \
   --body "<PR description>"
 ```

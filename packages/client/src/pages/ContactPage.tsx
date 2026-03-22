@@ -90,7 +90,7 @@ const socialPlatforms = [
 
 export function ContactPage() {
   return (
-    <main id="main-content">
+    <>
       {/* Section 1: Contact Details */}
       <section style={sectionStyle} aria-labelledby="contact-heading">
         <div style={innerStyle}>
@@ -141,7 +141,7 @@ export function ContactPage() {
                   marginBottom: '16px',
                 }}
               >
-                Whether you&apos;re a mission team looking for capital, an investor seeking
+                Whether you&apos;re a mission team looking for capital, a backer seeking
                 opportunities, or simply a believer in humanity&apos;s multi-planetary future — we
                 want to hear from you.
               </p>
@@ -187,6 +187,6 @@ export function ContactPage() {
           </div>
         </div>
       </section>
-    </main>
+    </>
   )
 }

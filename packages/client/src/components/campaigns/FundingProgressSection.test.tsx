@@ -16,6 +16,7 @@ const mockCampaign: CampaignDetail = {
   contributorCount: 250,
   deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   createdAt: new Date('2024-01-01T00:00:00.000Z'),
+  createdBy: null,
   slug: 'test-campaign',
   alignmentStatement: 'Aligned with mission.',
   tags: [],
@@ -26,6 +27,9 @@ const mockCampaign: CampaignDetail = {
   stretchGoals: [],
   teamMembers: [],
   updates: [],
+  creatorId: null,
+  reviewerId: null,
+  cancellationRequestedAt: null,
 }
 
 describe('FundingProgressSection', () => {

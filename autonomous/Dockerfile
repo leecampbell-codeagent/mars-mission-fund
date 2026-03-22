@@ -1,12 +1,13 @@
 # Autonomous agent: Claude Code + Playwright MCP in Docker
 # Base includes browser deps + Node.js (Ubuntu Noble)
-FROM mcr.microsoft.com/playwright:v1.52.0-noble
+FROM mcr.microsoft.com/playwright:v1.58.2-noble
 
 # System dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     jq \
+    lsof \
     sudo \
   && rm -rf /var/lib/apt/lists/*
 
@@ -41,20 +42,20 @@ RUN mkdir -p /home/agent/.claude \
 WORKDIR /workspace
 RUN chown agent:agent /workspace
 
-# Copy scripts
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY agent-loop.sh /usr/local/bin/agent-loop.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/agent-loop.sh
-
-# Copy prompts into container
-COPY prompts/ /usr/local/share/prompts/
-
 USER agent
 
 # Install Chromium using the MCP server's bundled Playwright, not the system one.
 # @playwright/mcp bundles its own playwright-core which may expect a different
 # browser revision than the system Playwright. Using its bundled copy ensures
 # the installed browser matches what the MCP server will look for at runtime.
+# Placed before COPY steps so script/prompt edits don't bust this cache layer.
 RUN node /usr/lib/node_modules/@playwright/mcp/node_modules/playwright-core/cli.js install chromium
+
+# Copy scripts (after Chromium install so edits here don't trigger re-download)
+COPY --chown=agent:agent entrypoint.sh agent-loop.sh resolve-conflicts-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/agent-loop.sh /usr/local/bin/resolve-conflicts-entrypoint.sh
+
+# Copy prompts into container
+COPY --chown=agent:agent prompts/ /usr/local/share/prompts/
 
 ENTRYPOINT ["entrypoint.sh"]

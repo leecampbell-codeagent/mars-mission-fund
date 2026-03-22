@@ -6,6 +6,7 @@
       "Bash(grep:*)",
       "Bash(find:*)",
       "Bash(head:*)",
+      "Bash(sed:*)",
       "Bash(tail:*)",
       "Bash(wc:*)",
       "Bash(sort:*)",
@@ -25,6 +26,7 @@
       "Bash(git status:*)",
       "Bash(git stash:*)",
       "Bash(git remote:*)",
+      "Bash(git rebase:*)",
       "Bash(git fetch:*)",
       "Bash(git rebase:*)",
       "Bash(git cherry-pick:*)",
@@ -41,7 +43,9 @@
       "Bash(node:*)",
       "Bash(eslint:*)",
       "Bash(prettier:*)",
-      "Bash(tsc:*)"
+      "Bash(tsc:*)",
+      "Bash(./scripts/*)",
+      "mcp__playwright__*"
     ],
     "deny": ["Bash(git branch -D:*)", "Bash(gh pr merge:*)"]
   },

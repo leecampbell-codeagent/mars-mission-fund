@@ -16,7 +16,7 @@ const titleStyle: React.CSSProperties = {
   fontFamily: 'var(--type-card-title)',
   color: 'var(--color-text-primary)',
   margin: '12px 0 8px',
-  fontSize: '18px',
+  fontSize: 'var(--type-card-title-size)',
   fontWeight: 700,
   lineHeight: 1.3,
 }
@@ -53,7 +53,7 @@ export function MissionCard({
       <p style={fundingStatusStyle}>
         Raised {raised} of {goal}
       </p>
-      <Button variant="ghost" href="#">
+      <Button variant="ghost" href="/campaigns">
         View Mission
       </Button>
     </Card>

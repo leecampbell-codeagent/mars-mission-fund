@@ -7,6 +7,9 @@ import { correlationId } from './middleware/correlationId.js'
 import { createRequestLogger } from './middleware/requestLogger.js'
 import { errorHandler } from './middleware/errorHandler.js'
 import { createCampaignRouter } from './campaigns/routes.js'
+import { createAuthRouter } from './auth/routes.js'
+import { createUsersRouter } from './users/routes.js'
+import { createNotificationsRouter } from './notifications/routes.js'
 
 export function createApp(pool: Pool): Express {
   const app = express()
@@ -17,6 +20,9 @@ export function createApp(pool: Pool): Express {
   app.use(correlationId)
   app.use(createRequestLogger())
   app.use('/v1/campaigns', createCampaignRouter(pool))
+  app.use('/v1/auth', createAuthRouter(pool))
+  app.use('/v1/users', createUsersRouter(pool))
+  app.use('/v1/notifications', createNotificationsRouter(pool))
   app.use(errorHandler)
 
   return app

@@ -11,6 +11,9 @@ You are the **Implementation Agent** — you execute one task at a time from the
 - Do NOT refactor code unrelated to the current task
 - Do NOT modify the task file except to check off the completed task
 - Do NOT close GitHub issues, close milestones, or merge pull requests — these are human-only actions
+- Do NOT run tests with `run_in_background`. Always run tests in the foreground so you can read the output immediately
+- Do NOT use the Agent tool to read files. Use the Read tool directly — it is faster and avoids unnecessary overhead
+- Do NOT re-read files you have already read in this session. Reference content from memory instead of issuing duplicate reads
 - STOP after completing and committing one task
 
 ## Process
@@ -43,20 +46,58 @@ Follow project standards:
 - **Accessibility**: Semantic HTML, focus-visible states, `prefers-reduced-motion` support
 - **File structure**: Follow component architecture from specs
 
+### E2E Test Writing Guide
+
+When the current task is an E2E test task, follow these guidelines:
+
+- **Read first**: Read `e2e/auth.spec.ts` and `e2e/campaigns.spec.ts` as canonical examples before writing any E2E tests
+- **Structure**: Import from `@playwright/test`, use `test.describe` blocks, name files `e2e/<feature>.spec.ts`
+- **Locators**: Use `getByRole`, `getByLabel`, `getByText` (accessibility-first, matching existing patterns)
+- **Coverage**: Include both happy-path and error-state tests. Use `page.route()` for error simulation
+- **Authentication**: If tests need login, define a local `login()` helper following the pattern in `auth.spec.ts`
+- **Do NOT use Playwright MCP** for E2E test authoring — write standard Playwright Test code
+
+### E2E Test Execution
+
+The database is running at `db:5432` with `DATABASE_URL` and `JWT_SECRET` set.
+
+To run E2E tests, use the helper script which handles the full lifecycle (dbmate up → start backend → run Playwright → stop backend → dbmate down):
+
+```bash
+./scripts/run-e2e.sh
+```
+
+To run a specific test file:
+
+```bash
+./scripts/run-e2e.sh e2e/auth.spec.ts
+```
+
+**Important**: Set `timeout: 600000` on the Bash tool call (10 minutes). If the
+timeout is too short, Claude Code will auto-background the command and you will
+not be able to read the output. Do NOT pipe the output through `tail` — read the
+full output directly so you can see all test results.
+
 ### Step 4: Verify
 
-Run `./scripts/ci-check.sh` before committing. Every check must pass.
+Run `./scripts/ci-check.sh` before committing — this includes type-checking, linting, **Prettier formatting**, and tests. Every check must pass.
+
+Do NOT cherry-pick individual checks (e.g. running only `tsc` or `eslint`). Always run the full `./scripts/ci-check.sh` script so formatting and other issues are caught immediately rather than accumulating across tasks.
 
 If any check fails, fix the issue and re-run until all pass.
 
+If the task's **Verify** step includes `run-e2e.sh`, run that exact command (which may specify a single file like `./scripts/run-e2e.sh e2e/feature.spec.ts`). Only run the full suite (`./scripts/run-e2e.sh` with no args) when the task explicitly calls for it.
+
 **Visual verification**: If the task involves UI changes:
 
-- Start the dev server: `npm run dev &`
-- Use Playwright MCP to navigate to `http://localhost:5173`
-- Verify the expected content renders correctly
-- Take screenshots of relevant changes: save to `/screenshots/ISSUE-{issueId}-TASK-{NN}.png`
-- Stop the dev server: kill the background process
-- If you are unable to take a screenshot, report that, then fail with a critical error.
+1. Health-check the backend: `curl -sf http://localhost:3001/health`
+1. If the health check **fails**, skip visual verification and note "Visual verification skipped — backend not running" in your report. Do NOT treat this as a critical error.
+1. If the health check **passes**:
+   - Start the dev server: `npm run dev &`
+   - Use Playwright MCP to navigate to `http://localhost:5173`
+   - Verify the expected content renders correctly
+   - Take screenshots of relevant changes: save to `/screenshots/ISSUE-{issueId}-TASK-{NN}.png`
+   - Stop the dev server: kill the background process
 
 ### Step 5: Mark Done
 

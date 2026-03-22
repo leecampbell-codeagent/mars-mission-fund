@@ -8,7 +8,7 @@ const titleStyle: React.CSSProperties = {
   fontFamily: 'var(--type-card-title)',
   color: 'var(--color-text-primary)',
   margin: '12px 0 8px',
-  fontSize: '18px',
+  fontSize: 'var(--type-card-title-size)',
   fontWeight: 700,
   lineHeight: 1.3,
 }
@@ -75,6 +75,7 @@ export function CampaignCard({ campaign }: CampaignCardProps) {
       <p style={summaryStyle}>{excerpt}</p>
       <ProgressBar
         value={fundingPct}
+        complete={fundingPct >= 100}
         label={`${campaign.title} funding progress: ${Math.round(fundingPct)}% funded`}
       />
       <p style={fundingStatusStyle}>
